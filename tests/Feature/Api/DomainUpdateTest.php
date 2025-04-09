@@ -14,16 +14,20 @@ class DomainUpdateTest extends TestCase
     /**
      * @test
      */
-    public function it_updates_domain_name(): void
+    public function test_it_updates_domain_name()
     {
-        $this->actingAs(User::factory()->create());
+        $user = User::factory()->create();
+        $domain = Domain::create([
+            'name' => 'old-domain.com',
+        ]);
 
-        $domain = Domain::factory()->create();
-
-        $response = $this->putJson("/api/domains/{$domain->id}", [
-            'name' => Domain::factory()->make()->name,
+        $response = $this->actingAs($user)->putJson("/api/domains/{$domain->id}", [
+            'name' => 'new-domain-name.com',
         ]);
 
         $response->assertStatus(200);
+
+        $domain->refresh();
+        $this->assertEquals('new-domain-name.com', $domain->name);
     }
 }

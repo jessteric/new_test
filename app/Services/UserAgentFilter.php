@@ -11,6 +11,8 @@ class UserAgentFilter extends AbstractAccessDomainFilter
     {
         $userAgent = $request->header('User-Agent');
 
-        return true;
+        $blockedUserAgents = config('domain_filters.domains.' . $domain->name . '.user_agents', []);
+
+        return !in_array($userAgent, $blockedUserAgents);
     }
 }

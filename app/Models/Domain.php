@@ -9,6 +9,8 @@ class Domain extends Model
 {
     use HasFactory;
 
+    protected $table = 'domains';
+
     /**
      * The attributes that are mass assignable.
      *

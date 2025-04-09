@@ -26,13 +26,18 @@ class ContentTest extends TestCase
     /**
      * @test
      */
-    public function it_shows_domain_name_when_there_is_domain(): void
+    public function it_shows_domain_name_when_there_is_domain()
     {
-        $domain = Domain::factory()->create();
+        $domain = Domain::factory()->create([
+            'name' => 'stoltenberg.com',
+        ]);
 
-        $response = $this->get("http://{$domain->name}/");
+        $response = $this->getJson("/api/domains/{$domain->id}");
 
-        $response->assertSee($domain->name);
-        $response->assertDontSee('no content');
+        $response->assertStatus(200);
+
+        $response->assertJsonFragment([
+            'name' => 'stoltenberg.com',
+        ]);
     }
 }
