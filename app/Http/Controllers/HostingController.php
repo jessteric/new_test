@@ -9,7 +9,7 @@ use Illuminate\Http\Response;
 
 class HostingController extends Controller
 {
-    public function fallback(Request $request, HostingRouter $router)
+    public function fallback(Request $request, HostingRouter $router): Response
     {
         return $router->handle($request);
     }
